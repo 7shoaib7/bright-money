@@ -12,7 +12,6 @@
 .navigation-links-container{
     display: flex;
     align-items: center;
-    gap: 2rem;
     height:100%;
 }
 
@@ -20,6 +19,7 @@
     font-size:1rem;
     font-weight: 500;
     text-decoration: none;
+    margin-left: 2rem;
     /* color:#104023; */
     color:white
 }
