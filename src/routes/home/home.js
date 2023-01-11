@@ -43,11 +43,21 @@ const Home = () => {
     const value = e.target.value;
     setData({ ...data, [name]: value })
   }
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString("en-US", {
+      month: "2-digit",
+      day: "2-digit",
+      year: "numeric",
+    }).split("/").join("-");
+  };
+
   const handleDateChange = (event) => {
     const newDate = event.target.value;
     setData({
       ...data,
-      date: newDate
+      date: formatDate(newDate)
     })
     setDateVal(newDate);
   };
