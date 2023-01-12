@@ -132,7 +132,7 @@ const BillTable = () => {
                             <tr key={bill.id}>
                                 <td>{bill.description}</td>
                                 <td>{bill.category}</td>
-                                <td>{bill.amount}</td>
+                                <td>₹ {bill.amount}</td>
                                 <td>{bill.date}</td>
                                 <td>
                                     <Button variant="contained" color="success" sx={{ marginRight: "1rem" }} size="small" onClick={() => handleEdit(bill)}>

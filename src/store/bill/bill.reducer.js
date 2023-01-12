@@ -1,7 +1,8 @@
-import { BILL_ACTION_TYPES } from "./bill.types"
+import { BILL_ACTION_TYPES } from "./bill.types";
+import billList from "../../billData.json"
 
 const initialState = {
-    bills: [],
+    bills:billList.bills,
     category:""
 }
 
