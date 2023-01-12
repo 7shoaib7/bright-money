@@ -1,4 +1,4 @@
-import { useState} from "react"
+import { useState } from "react"
 import { useDispatch, useSelector } from 'react-redux';
 import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
@@ -17,9 +17,9 @@ const BillTable = () => {
         amount: '',
         date: ''
     })
-    const [billId,setBillId] = useState("")
+    const [billId, setBillId] = useState("")
 
-    const { bills} = useSelector((state) => state.bills)
+    const { bills, category } = useSelector((state) => state.bills)
     const dispatch = useDispatch();
 
     const handleEdit = (bill) => {
@@ -66,7 +66,8 @@ const BillTable = () => {
     };
 
     const handleSave = () => {
-        dispatch(editBill(bills,data,billId))
+        if (!validateData(data)) return
+        dispatch(editBill(bills, data, billId))
         setData({
             description: '',
             category: '',
@@ -76,6 +77,25 @@ const BillTable = () => {
         setDateVal("")
         setBillId("")
         setOpen(false);
+    }
+    const validateData = (data) => {
+        if (!data.description.length) {
+            alert("Please add description")
+            return false
+        }
+        if (!data.category.length) {
+            alert("Please add category")
+            return false
+        }
+        if (!data.amount.length) {
+            alert("Please add amount")
+            return false
+        }
+        if (!data.date.length) {
+            alert("Please add date")
+            return false
+        }
+        return true
     }
 
 
@@ -92,7 +112,7 @@ const BillTable = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {bills.map((bill) => (
+                    {category.length ? bills.filter(item => item.category === category).map((bill) => (
                         <tr key={bill.id}>
                             <td>{bill.description}</td>
                             <td>{bill.category}</td>
@@ -107,7 +127,23 @@ const BillTable = () => {
                                 </Button>
                             </td>
                         </tr>
-                    ))}
+                    ))
+                        : bills.map((bill) => (
+                            <tr key={bill.id}>
+                                <td>{bill.description}</td>
+                                <td>{bill.category}</td>
+                                <td>{bill.amount}</td>
+                                <td>{bill.date}</td>
+                                <td>
+                                    <Button variant="contained" color="success" sx={{ marginRight: "1rem" }} size="small" onClick={() => handleEdit(bill)}>
+                                        Edit
+                                    </Button>
+                                    <Button variant="outlined" color="error" size='small' onClick={() => handleDelete(bill.id)}>
+                                        Delete
+                                    </Button>
+                                </td>
+                            </tr>
+                        ))}
                 </tbody>
             </table>
             <Modal
@@ -138,9 +174,6 @@ const BillTable = () => {
                         onChange={handleInput}
                     />
                     <Select
-                        id="demo-select-small"
-                        labelId="demo-select-small"
-                        label="Category"
                         size="small"
                         sx={{ marginTop: "1rem", color: "#17c95f" }}
                         fullWidth

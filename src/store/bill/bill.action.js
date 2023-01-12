@@ -25,3 +25,10 @@ export const deleteBill = (bills, id) => {
         payload: newBillList
     }
 }
+
+export const filterBillCategory = (category)=>{
+    return{
+        type: BILL_ACTION_TYPES.FILTER_BILL,
+        payload: category
+    }
+}

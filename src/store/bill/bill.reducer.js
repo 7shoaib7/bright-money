@@ -2,7 +2,7 @@ import { BILL_ACTION_TYPES } from "./bill.types"
 
 const initialState = {
     bills: [],
-    bill: {}
+    category:""
 }
 
 const billReducers = (state = initialState, action) => {
@@ -24,6 +24,11 @@ const billReducers = (state = initialState, action) => {
                 ...state,
                 bills: payload
             }
+        case BILL_ACTION_TYPES.FILTER_BILL:
+            return{
+                ...state,
+                category:payload
+            }    
         default:
             return state
     }

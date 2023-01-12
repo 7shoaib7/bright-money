@@ -6,7 +6,7 @@ import TextField from '@mui/material/TextField';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import { useDispatch, useSelector } from 'react-redux';
-import { addBill } from "../../store/bill/bill.action";
+import { addBill, filterBillCategory } from "../../store/bill/bill.action";
 import { v4 as uuidv4 } from 'uuid';
 import BillTable from "../../components/billTable/billTable"
 import "./home.css";
@@ -21,9 +21,10 @@ const Home = () => {
     amount: '',
     date: ''
   })
+  const [category, setCategory] = useState("")
 
   const dispatch = useDispatch();
-  const bills = useSelector((state) => state.bills.bills)
+  const {bills} = useSelector((state) => state.bills)
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
@@ -63,6 +64,7 @@ const Home = () => {
   };
 
   const handleAdd = () => {
+    if(!validateData(data)) return
     dispatch(addBill(bills, { ...data, id: uuidv4() }))
     setData({
       description: '',
@@ -74,10 +76,36 @@ const Home = () => {
     setOpen(false);
   }
 
+  const filterCategory = (e) => {
+    const value = e.target.value
+    setCategory(value)
+    dispatch(filterBillCategory(value))
+  }
+
+const validateData =(data) => {
+    if(!data.description.length){
+      alert("Please add description")
+      return false
+    }
+    if(!data.category.length){
+      alert("Please add category")
+      return false
+    }
+    if(!data.amount.length){
+      alert("Please add amount")
+      return false
+    }
+    if(!data.date.length){
+      alert("Please add date")
+      return false
+    }
+   return true
+}
+
   return (
     <>
       <div className="home">
-        <div className="add-bill">
+        <div className="add-bill filter-category">
           <Button
             startIcon={<AddIcon />}
             variant="contained"
@@ -86,8 +114,31 @@ const Home = () => {
           >
             New Bill
           </Button>
+          {bills.length ? (
+            <Select
+              size="small"
+              name="category"
+              value={category}
+              onChange={filterCategory}
+              displayEmpty
+              sx={{ marginLeft: "1rem" }}
+            >
+              <MenuItem value="">
+                All Categories
+              </MenuItem>
+              <MenuItem value="Utility">Utility</MenuItem>
+              <MenuItem value="Shopping">Shopping</MenuItem>
+              <MenuItem value="Food & Dining">Food & Dining</MenuItem>
+              <MenuItem value="Personal Care">Personal Care</MenuItem>
+              <MenuItem value="Education">Education</MenuItem>
+              <MenuItem value="Travel">Travel</MenuItem>
+              <MenuItem value="Others">Others</MenuItem>
+            </Select>
+          ) : null}
         </div>
+
         <BillTable />
+
       </div>
       <Modal
         open={open}
@@ -117,9 +168,6 @@ const Home = () => {
             onChange={handleInput}
           />
           <Select
-            id="demo-select-small"
-            labelId="demo-select-small"
-            label="Category"
             size="small"
             sx={{ marginTop: "1rem", color: "#17c95f" }}
             fullWidth
