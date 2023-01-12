@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Button from '@mui/material/Button';
 import AddIcon from '@mui/icons-material/Add';
 import Modal from '@mui/material/Modal';
@@ -13,7 +13,7 @@ import "./home.css";
 
 
 const Home = () => {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const [dateVal, setDateVal] = useState("");
   const [data, setData] = useState({
     description: '',

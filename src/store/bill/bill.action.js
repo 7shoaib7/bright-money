@@ -7,3 +7,21 @@ export const addBill = (bills, dataToAdd) => {
         payload: newBillList
     }
 }
+
+export const editBill = (bills, dataToEdit, id) => {
+    const idx = bills.findIndex((bill) => bill.id === id);
+    const newBillList = [...bills]
+     newBillList[idx] = dataToEdit
+
+    return {
+        type: BILL_ACTION_TYPES.EDIT_BILL,
+        payload: newBillList
+    }
+}
+export const deleteBill = (bills, id) => {
+    const newBillList = bills.filter((bill) => bill.id !== id)
+    return {
+        type: BILL_ACTION_TYPES.DELETE_BILL,
+        payload: newBillList
+    }
+}

@@ -1,41 +1,184 @@
+import { useState} from "react"
 import { useDispatch, useSelector } from 'react-redux';
 import Button from '@mui/material/Button';
+import Modal from '@mui/material/Modal';
+import TextField from '@mui/material/TextField';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
+import { editBill, deleteBill } from "../../store/bill/bill.action";
 import "./billTable.css";
 
 const BillTable = () => {
-const bills = useSelector((state) => state.bills.bills)
-    
-  return (
-    <table className="bill-table">
-      <thead>
-        <tr>
-          <th>Description</th>
-          <th>Category</th>
-          <th>Amount</th>
-          <th>Date</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        {bills.map((bill) => (
-          <tr key={bill.id}>
-            <td>{bill.description}</td>
-            <td>{bill.category}</td>
-            <td>{bill.amount}</td>
-            <td>{bill.date}</td>
-            <td>
-            <Button variant="contained" color="success" sx={{ marginRight: "1rem" }} size="small">
-              Edit
-            </Button>
-            <Button variant="outlined" color="error" size='small'>
-              Delete
-            </Button>
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  );
+    const [open, setOpen] = useState(false);
+    const [dateVal, setDateVal] = useState("");
+    const [data, setData] = useState({
+        description: '',
+        category: '',
+        amount: '',
+        date: ''
+    })
+    const [billId,setBillId] = useState("")
+
+    const { bills} = useSelector((state) => state.bills)
+    const dispatch = useDispatch();
+
+    const handleEdit = (bill) => {
+        setOpen(true)
+        setData({
+            description: bill.description,
+            category: bill.category,
+            amount: bill.amount,
+            date: bill.date
+        })
+        setBillId(bill.id)
+    }
+
+    const handleDelete = (id) => {
+        dispatch(deleteBill(bills, id));
+    }
+
+    const handleClose = () => {
+        setOpen(false);
+    }
+
+
+    const handleInput = (e) => {
+        const name = e.target.name;
+        const value = e.target.value;
+        setData({ ...data, [name]: value })
+    }
+    const formatDate = (dateString) => {
+        const date = new Date(dateString);
+        return date.toLocaleDateString("en-US", {
+            month: "2-digit",
+            day: "2-digit",
+            year: "numeric",
+        }).split("/").join("-");
+    };
+
+    const handleDateChange = (event) => {
+        const newDate = event.target.value;
+        setData({
+            ...data,
+            date: formatDate(newDate)
+        })
+        setDateVal(newDate);
+    };
+
+    const handleSave = () => {
+        dispatch(editBill(bills,data,billId))
+        setData({
+            description: '',
+            category: '',
+            amount: '',
+            date: ''
+        })
+        setDateVal("")
+        setBillId("")
+        setOpen(false);
+    }
+
+
+    return (
+        <>
+            <table className="bill-table">
+                <thead>
+                    <tr>
+                        <th>Description</th>
+                        <th>Category</th>
+                        <th>Amount</th>
+                        <th>Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {bills.map((bill) => (
+                        <tr key={bill.id}>
+                            <td>{bill.description}</td>
+                            <td>{bill.category}</td>
+                            <td>{bill.amount}</td>
+                            <td>{bill.date}</td>
+                            <td>
+                                <Button variant="contained" color="success" sx={{ marginRight: "1rem" }} size="small" onClick={() => handleEdit(bill)}>
+                                    Edit
+                                </Button>
+                                <Button variant="outlined" color="error" size='small' onClick={() => handleDelete(bill.id)}>
+                                    Delete
+                                </Button>
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+            <Modal
+                open={open}
+                onClose={handleClose}
+            >
+                <div className="edit-bill-modal">
+                    <h4>Edit Bill Details</h4>
+                    <TextField
+                        label="Description"
+                        variant="outlined"
+                        size="small"
+                        fullWidth
+                        sx={{ marginTop: "1rem", color: "#17c95f" }}
+                        name="description"
+                        value={data.description}
+                        onChange={handleInput}
+                    />
+                    <TextField
+                        label="Amount ₹"
+                        type="number"
+                        variant="outlined"
+                        size="small"
+                        fullWidth
+                        sx={{ marginTop: "1rem", color: "#17c95f" }}
+                        name="amount"
+                        value={data.amount || ""}
+                        onChange={handleInput}
+                    />
+                    <Select
+                        id="demo-select-small"
+                        labelId="demo-select-small"
+                        label="Category"
+                        size="small"
+                        sx={{ marginTop: "1rem", color: "#17c95f" }}
+                        fullWidth
+                        name="category"
+                        value={data.category}
+                        onChange={handleInput}
+                        displayEmpty
+                    >
+                        <MenuItem value="">
+                            Category
+                        </MenuItem>
+                        <MenuItem value="Utility">Utility</MenuItem>
+                        <MenuItem value="Shopping">Shopping</MenuItem>
+                        <MenuItem value="Food & Dining">Food & Dining</MenuItem>
+                        <MenuItem value="Personal Care">Personal Care</MenuItem>
+                        <MenuItem value="Education">Education</MenuItem>
+                        <MenuItem value="Travel">Travel</MenuItem>
+                        <MenuItem value="Others">Others</MenuItem>
+                    </Select>
+                    <input
+                        type="date"
+                        value={dateVal}
+                        onChange={handleDateChange}
+                        name="date"
+                        className="edit-date-input"
+                    />
+                    <div className="edit-bill-modal-btns">
+                        <Button variant="contained" color="success" sx={{ marginRight: "1rem" }} size="small" onClick={handleSave}>
+                            Save
+                        </Button>
+                        <Button variant="outlined" color="error" size='small' onClick={handleClose}>
+                            Cancel
+                        </Button>
+                    </div>
+                </div>
+            </Modal>
+        </>
+    );
 };
 
 export default BillTable;
