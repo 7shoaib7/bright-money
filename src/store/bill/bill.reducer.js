@@ -3,7 +3,8 @@ import billList from "../../billData.json"
 
 const initialState = {
     bills:billList.bills,
-    category:""
+    category:"",
+    monthlyBudget:5000
 }
 
 const billReducers = (state = initialState, action) => {
@@ -29,6 +30,11 @@ const billReducers = (state = initialState, action) => {
             return{
                 ...state,
                 category:payload
+            }    
+        case BILL_ACTION_TYPES.MONTHLY_BUDGET:
+            return{
+                ...state,
+                monthlyBudget:payload
             }    
         default:
             return state

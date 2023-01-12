@@ -32,3 +32,9 @@ export const filterBillCategory = (category)=>{
         payload: category
     }
 }
+export const editBudget =(value)=>{
+    return{
+        type: BILL_ACTION_TYPES.MONTHLY_BUDGET,
+        payload: value
+    }
+}
