@@ -17,32 +17,49 @@
 }
 
 
-
 .add-bill-modal {
-    height:22rem;
-    width:20rem;
+    height: 22rem;
+    width: 20rem;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     background-color: white;
     border-radius: 1rem;
-    padding:1rem;
+    padding: 1rem;
 }
 
-.add-bill-modal-btns{
-    margin-top:1rem;
+.add-bill-modal-btns {
+    margin-top: 1rem;
     display: flex;
     justify-content: flex-end;
 }
 
-.date-input{
+.date-input {
     padding: 5px;
     border-radius: 0.2rem;
-    border:1px solid gray!important;
+    border: 1px solid gray !important;
     width: 100%;
     font-size: 1rem;
-    margin-top:1rem;
-    height:2.5rem;
+    margin-top: 1rem;
+    height: 2.5rem;
     cursor: pointer;
+}
+
+.modal-delete {
+    height: 10rem;
+    width: 20rem;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    border-radius: 1rem;
+    padding: 1rem;
+}
+
+.modal-delete-btns{
+   margin-top:4rem;
+    display: flex;
+    justify-content: flex-end;
 }

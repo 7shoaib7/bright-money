@@ -12,6 +12,7 @@ import BillTable from "../../components/billTable/billTable"
 import "./home.css";
 
 
+
 const Home = () => {
   const [open, setOpen] = useState(false);
   const [dateVal, setDateVal] = useState("");
@@ -24,7 +25,7 @@ const Home = () => {
   const [category, setCategory] = useState("")
 
   const dispatch = useDispatch();
-  const {bills} = useSelector((state) => state.bills)
+  const { bills } = useSelector((state) => state.bills)
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
@@ -64,7 +65,7 @@ const Home = () => {
   };
 
   const handleAdd = () => {
-    if(!validateData(data)) return
+    if (!validateData(data)) return
     dispatch(addBill(bills, { ...data, id: uuidv4() }))
     setData({
       description: '',
@@ -82,25 +83,25 @@ const Home = () => {
     dispatch(filterBillCategory(value))
   }
 
-const validateData =(data) => {
-    if(!data.description.length){
+  const validateData = (data) => {
+    if (!data.description.length) {
       alert("Please add description")
       return false
     }
-    if(!data.category.length){
+    if (!data.category.length) {
       alert("Please add category")
       return false
     }
-    if(!data.amount.length){
+    if (!data.amount.length) {
       alert("Please add amount")
       return false
     }
-    if(!data.date.length){
+    if (!data.date.length) {
       alert("Please add date")
       return false
     }
-   return true
-}
+    return true
+  }
 
   return (
     <>

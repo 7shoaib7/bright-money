@@ -10,6 +10,7 @@ import "./billTable.css";
 
 const BillTable = () => {
     const [open, setOpen] = useState(false);
+    const [openDelete, setOpenDelete] = useState(false);
     const [dateVal, setDateVal] = useState("");
     const [data, setData] = useState({
         description: '',
@@ -35,6 +36,8 @@ const BillTable = () => {
 
     const handleDelete = (id) => {
         dispatch(deleteBill(bills, id));
+        setOpenDelete(false)
+        setBillId("")
     }
 
     const handleClose = () => {
@@ -138,7 +141,14 @@ const BillTable = () => {
                                     <Button variant="contained" color="success" sx={{ marginRight: "1rem" }} size="small" onClick={() => handleEdit(bill)}>
                                         Edit
                                     </Button>
-                                    <Button variant="outlined" color="error" size='small' onClick={() => handleDelete(bill.id)}>
+                                    <Button
+                                        variant="outlined"
+                                        color="error"
+                                        size='small'
+                                        onClick={() => {
+                                            setOpenDelete(true)
+                                            setBillId(bill.id)
+                                        }}>
                                         Delete
                                     </Button>
                                 </td>
@@ -206,6 +216,22 @@ const BillTable = () => {
                         </Button>
                         <Button variant="outlined" color="error" size='small' onClick={handleClose}>
                             Cancel
+                        </Button>
+                    </div>
+                </div>
+            </Modal>
+            <Modal
+                open={openDelete}
+                onClose={() => setOpenDelete(false)}
+            >
+                <div className="modal-delete">
+                    <h4>Are you sure you want to delete?</h4>
+                    <div className="modal-delete-btns">
+                        <Button variant="contained" color="success" sx={{ marginRight: "1rem" }} size="small" onClick={() => handleDelete(billId)}>
+                            Yes
+                        </Button>
+                        <Button variant="outlined" color="error" size='small' onClick={() => setOpenDelete(false)}>
+                            No
                         </Button>
                     </div>
                 </div>
