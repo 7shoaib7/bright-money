@@ -13,17 +13,18 @@ const Pay = () => {
   const dispatch = useDispatch()
   const { bills, monthlyBudget } = useSelector((state) => state.bills)
 
+  const totalBills = bills.reduce((tot, bill) => tot + parseInt(bill.amount), 0)
   const billSorted = bills.sort((a, b) => a.amount - b.amount);
   let count = 0;
-  let total = 0
+  let totalBiilToPay = 0
   for (let i = 0; i < billSorted.length; i++) {
-    if (total < monthlyBudget) {
-      total += parseInt(billSorted[i].amount);
+    if (totalBiilToPay < monthlyBudget) {
+      totalBiilToPay += parseInt(billSorted[i].amount);
       billSorted[i].paid = true;
       count++;
     }
     else {
-      total -= parseInt(billSorted[i - 1].amount);
+      totalBiilToPay -= parseInt(billSorted[i - 1].amount);
       break;
     }
   }
@@ -76,9 +77,9 @@ const Pay = () => {
         </tbody>
       </table>
       <div className="total-amount">
-        <strong>Total Amount to be paid:</strong> ₹{total}
+        <strong>Total Amount to be paid:</strong> ₹{totalBiilToPay}
         {bills.length - count !== 0 ?
-          <p className="remaining-amount">(Add extra amount to your monthly budget to pay remaining {bills.length + 1 - count} bills)</p>
+          <p className="remaining-amount">(Add ₹{totalBills - totalBiilToPay} to your monthly budget to pay remaining {bills.length + 1 - count} bills)</p>
           : null}
       </div>
     </>
