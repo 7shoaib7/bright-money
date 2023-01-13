@@ -14,17 +14,15 @@ const Pay = () => {
   const { bills, monthlyBudget } = useSelector((state) => state.bills)
 
   const totalBills = bills.reduce((tot, bill) => tot + parseInt(bill.amount), 0)
-  const billSorted = bills.sort((a, b) => a.amount - b.amount);
-  let count = 0;
-  let totalBiilToPay = 0
-  for (let i = 0; i < billSorted.length; i++) {
-    if (totalBiilToPay < monthlyBudget) {
-      totalBiilToPay += parseInt(billSorted[i].amount);
-      billSorted[i].paid = true;
-      count++;
-    }
-    else {
-      totalBiilToPay -= parseInt(billSorted[i - 1].amount);
+  const sortedBills = bills.sort((a, b) => a.amount - b.amount);
+  let totalBillToPay = 0;
+  let billCount = 0;
+  for (let i = 0; i < sortedBills.length; i++) {
+    totalBillToPay += parseFloat(sortedBills[i].amount);
+    billCount++;
+    if (totalBillToPay > monthlyBudget) {
+      totalBillToPay = totalBillToPay - parseFloat(sortedBills[i].amount);
+      billCount--
       break;
     }
   }
@@ -66,8 +64,8 @@ const Pay = () => {
           </tr>
         </thead>
         <tbody>
-          {billSorted.map((bill, index) => (
-            <tr key={bill.id} className={index + 1 < count ? "highlight" : ""}>
+          {sortedBills.map((bill, index) => (
+            <tr key={bill.id} className={index < billCount ? "highlight" : ""}>
               <td>{bill.description}</td>
               <td>{bill.category}</td>
               <td>₹ {bill.amount}</td>
@@ -77,9 +75,9 @@ const Pay = () => {
         </tbody>
       </table>
       <div className="total-amount">
-        <strong>Total Amount to be paid:</strong> ₹{totalBiilToPay}
-        {bills.length - count !== 0 ?
-          <p className="remaining-amount">(Add ₹{totalBills - totalBiilToPay} to your monthly budget to pay remaining {bills.length + 1 - count} bills)</p>
+        <strong>Total Amount to be paid:</strong> ₹{totalBillToPay}
+        {bills.length - billCount !== 0 ?
+          <p className="remaining-amount">(Add ₹{totalBills - totalBillToPay} to your monthly budget to pay remaining {bills.length - billCount} bills)</p>
           : null}
       </div>
     </>
