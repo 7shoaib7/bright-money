@@ -8,7 +8,7 @@ const Navigation = () => {
             <div className="navigation">
                 <div className="navigation-links-container">
                     <Link className="logo" to="/">
-                        <h1>BillBook</h1>
+                        <h1>Xpensr</h1>
                     </Link>
                     <Link className='nav-link' to="/insights">
                         Insights
