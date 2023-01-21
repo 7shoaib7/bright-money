@@ -122,6 +122,7 @@ const Home = () => {
               value={category}
               onChange={filterCategory}
               displayEmpty
+              color="success"
               sx={{ marginLeft: "1rem" }}
             >
               <MenuItem value="">
@@ -156,6 +157,7 @@ const Home = () => {
             name="description"
             value={data.description}
             onChange={handleInput}
+            color="success"
           />
           <TextField
             label="Amount ₹"
@@ -167,6 +169,7 @@ const Home = () => {
             name="amount"
             value={data.amount}
             onChange={handleInput}
+            color="success"
           />
           <Select
             size="small"
@@ -176,6 +179,7 @@ const Home = () => {
             value={data.category}
             onChange={handleInput}
             displayEmpty
+            color="success"
           >
             <MenuItem value="">
               Category

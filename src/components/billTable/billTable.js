@@ -171,6 +171,7 @@ const BillTable = () => {
                         name="description"
                         value={data.description}
                         onChange={handleInput}
+                        color="success"
                     />
                     <TextField
                         label="Amount ₹"
@@ -182,6 +183,7 @@ const BillTable = () => {
                         name="amount"
                         value={data.amount || ""}
                         onChange={handleInput}
+                        color="success"
                     />
                     <Select
                         size="small"
@@ -191,6 +193,7 @@ const BillTable = () => {
                         value={data.category}
                         onChange={handleInput}
                         displayEmpty
+                        color="success"
                     >
                         <MenuItem value="">
                             Category

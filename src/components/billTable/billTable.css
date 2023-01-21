@@ -64,3 +64,7 @@
     height:2.5rem;
     cursor: pointer;
 }
+.edit-date-input:focus{
+  outline: none !important;
+   box-shadow: green 0 0 5px;
+}
